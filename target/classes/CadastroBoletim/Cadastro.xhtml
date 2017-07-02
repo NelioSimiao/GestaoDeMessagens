@@ -1,0 +1,90 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">novo registo</ui:define>
+	<ui:define name="corpo">
+		<h:form id="frm">
+			<h1>Novo Registo</h1>
+				<p:messages autoUpdate="true" />
+
+			<p:toolbar style="margin-top:10px">
+				<p:toolbarGroup>
+					<p:commandButton value="Salvar" id="botaoSalvar"
+						action="#{pesquisaClienteBean.pesquisar}" update="@form" />
+				</p:toolbarGroup>
+
+			</p:toolbar>
+
+			<p:tabView style="margin-top:20px">
+				<p:tab title="Cadastro de Menssagem">
+
+					<p:panelGrid columns="2" id="painel"
+						style="margin-top:10px;width:100%" columnClasses="rotulo,canpo">
+
+						<p:outputLabel value="Data de difusão da messagem"
+							for="dataDefusao" />
+						<p:inputText id="dataDefusao" />
+
+						<p:outputLabel value="Preço " for="preco" />
+						<p:inputText id="preco" size="60" />
+
+						<p:outputLabel value="Conselho " for="conselho" />
+						<h:panelGroup layout="block" style="padding-right: 10px" id="conselho">
+							<p:inputTextarea rows="5" style="width:100%"/>
+						</h:panelGroup>
+
+						<p:outputLabel value="Mensagem " for="mensagem" />
+						<h:panelGroup layout="block" style="padding-right: 10px" id="mensagem">
+							<p:inputTextarea rows="5" style="width:100%" />
+						</h:panelGroup>
+					</p:panelGrid>
+				</p:tab>
+
+
+				<p:tab title="Cadastro de SMS">
+
+					<p:panelGrid columns="2" id="painelsms"
+						style="margin-top:10px;width:100%" columnClasses="rotulo,canpo">
+
+						<p:outputLabel value="Data de difusão da SMS" for="dataDefusaosms" />
+						<p:inputText id="dataDefusaosms" />
+
+						<p:outputLabel value="Distrito " for="distrito" />
+						<p:inputText id="distrito" size="60" />
+
+						<p:outputLabel value="SMS"/>
+
+						<h:panelGroup layout="block" style="padding-right: 10px">
+							<p:inputTextarea rows="5" style="width:100%"  />
+						</h:panelGroup>
+
+
+					</p:panelGrid>
+
+
+				</p:tab>
+				<p:tab title="Guardar Boletim">
+					<p:panelGrid columns="2" id="paineldoc"
+						style="margin-top:10px;width:100%" columnClasses="rotulo,canpo">
+
+						<p:outputLabel value="Data" for="data" />
+						<p:inputText id="data" />
+
+						<p:outputLabel value="Procurar o documento " />
+						<p:fileUpload mode="simple" skinSimple="true" />
+
+
+
+					</p:panelGrid>
+				</p:tab>
+			</p:tabView>
+
+
+		</h:form>
+	</ui:define>
+
+</ui:composition>
