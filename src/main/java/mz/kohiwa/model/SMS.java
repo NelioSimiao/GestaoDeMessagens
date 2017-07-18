@@ -4,6 +4,20 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.NotBlank;
+
+@Entity
+@Table(name = "sms")
 public class SMS implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -13,6 +27,8 @@ public class SMS implements Serializable {
 	private String distrito;
 	private BigDecimal precoSMS;
 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long getId() {
 		return id;
 	}
@@ -21,6 +37,9 @@ public class SMS implements Serializable {
 		this.id = id;
 	}
 
+	@NotNull
+	@Temporal(TemporalType.DATE)
+	@Column(name = "data_difusao_sms", nullable = false)
 	public Date getDataDifusaoSMS() {
 		return dataDifusaoSMS;
 	}
@@ -29,6 +48,8 @@ public class SMS implements Serializable {
 		this.dataDifusaoSMS = dataDifusaoSMS;
 	}
 
+	@NotBlank
+	@Column(name = "sms", nullable = false)
 	public String getSMS() {
 		return SMS;
 	}
@@ -36,7 +57,8 @@ public class SMS implements Serializable {
 	public void setSMS(String sMS) {
 		SMS = sMS;
 	}
-
+	@NotBlank
+	@Column(name = "distrito", nullable = false)
 	public String getDistrito() {
 		return distrito;
 	}
@@ -44,7 +66,8 @@ public class SMS implements Serializable {
 	public void setDistrito(String distrito) {
 		this.distrito = distrito;
 	}
-
+	@NotBlank
+	@Column(name = "preco_sms", nullable = false)
 	public BigDecimal getPrecoSMS() {
 		return precoSMS;
 	}
