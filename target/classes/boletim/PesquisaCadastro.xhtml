@@ -1,0 +1,137 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">Pesquisa do Registo</ui:define>
+	<ui:define name="corpo">
+		<h:form id="frm" enctype="multipart/form-data">
+			<h1>Pesquisa Registo</h1>
+			<p:messages autoUpdate="true" />
+
+			<p:toolbar style="margin-top:10px">
+				<p:toolbarGroup align="right">
+					<p:button value="Novo Registo" outcome="/boletim/Cadastro" />
+				</p:toolbarGroup>
+
+				<p:toolbarGroup>
+					<p:commandButton value="Pesquisar" id="botaoSalvar"
+						action="#{pesquidaGestaoDeArquivoBean.pesquisar}" update="@form" />
+				</p:toolbarGroup>
+
+			</p:toolbar>
+			<p:panelGrid columns="2" columnClasses="linha,linha2" 
+				style="width:100%;margin-top:20px" layou="grid">
+				<h:outputText value="Pesquisa" id="pesquisa" />
+				<p:inputText for="pesquisa" size="80"
+					value="#{pesquidaGestaoDeArquivoBean.filter.conselho}" />
+
+			</p:panelGrid>
+
+
+			<p:dataTable id="registosTable"
+				value="#{pesquidaGestaoDeArquivoBean.registosfiltrado}"
+				var="docRegisto" style="margin-top:20px"
+				emptyMessage="Nenhum registo encontrado ." paginator="true"
+				rows="20" paginatorAlwaysVisible="false" paginatorPosition="bottom">
+				<f:facet name="header">
+                Registos Cadastrados
+                </f:facet>
+				<p:column style="width:16px">
+					<p:rowToggler />
+				</p:column>
+				<p:column headerText="ID" style="text-align:center ; width:10px">
+					<h:outputText value="#{docRegisto.id}" />
+				</p:column>
+				<p:column headerText="Data/Difusão"
+					style="text-align:center ; width:70px">
+					<h:outputText value="#{docRegisto.mensagem.dataDifusaoMensagem}" />
+				</p:column>
+				<p:column headerText="Preço Mensagem"
+					style="text-align:center ; width:70px">
+					<h:outputText value="#{docRegisto.mensagem.precoMensagem}" />
+				</p:column>
+				<p:column headerText="Conselho" style="text-align:left;width:250px">
+					<h:outputText value="#{docRegisto.mensagem.conselhoResumida}" />
+				</p:column>
+				<p:column headerText="Mensagem" style="text-align:left;width:250px">
+					<h:outputText value="#{docRegisto.mensagem.mensagemResumida }" />
+				</p:column>
+				<p:column headerText="Distrito" style="text-align:center;width:50px">
+					<h:outputText value="#{docRegisto.sms.distrito}" />
+				</p:column>
+				<p:column headerText="Preço SMS"
+					style="text-align:center;width:60px">
+					<h:outputText value="#{docRegisto.sms.precoSMS}" />
+				</p:column>
+				<p:column headerText="Difusão SMS"
+					style="text-align:left;width:60px">
+					<h:outputText value="#{docRegisto.sms.dataDifusaoSMS}" />
+				</p:column>
+
+				<p:column headerText="Baixar" style="text-align:left;width:35px">
+					<p:commandButton icon="ui-icon-arrowthickstop-1-s"
+						title="Download Anexo" ajax="false"
+						actionListener="#{pesquidaGestaoDeArquivoBean.downloadDoc(docRegisto.id)}">
+						<p:fileDownload value="#{pesquidaGestaoDeArquivoBean.download}">
+							<f:setPropertyActionListener value="#{docRegisto}"
+								target="#{pesquidaGestaoDeArquivoBean.docRegistoSelecionado}"></f:setPropertyActionListener>
+						</p:fileDownload>
+					</p:commandButton>
+				</p:column>
+
+
+				<p:column headerText="SMS" style="text-align:left;width:250px">
+					<h:outputText value="#{docRegisto.sms.smsresumido}" />
+				</p:column>
+				<p:column style="text-align:center;width:80px">
+					<p:button outcome="/boletim/Cadastro" icon="ui-icon-pencil"
+						title="Editar">
+						<f:param name="docRegisto" value="#{docRegisto.id}" />
+					</p:button>
+
+					<p:commandButton icon="ui-icon-trash" title="Excluir"
+						oncomplete="PF('ExclusaoRegisto').show()"
+						update=":frm:confirmacaoExclusaoDialog">
+						<f:setPropertyActionListener value="#{docRegisto}"
+							target="#{pesquidaGestaoDeArquivoBean.docRegistoSelecionado}"></f:setPropertyActionListener>
+					</p:commandButton>
+				</p:column>
+				<p:rowExpansion>
+					<p:panelGrid columns="2" columnClasses="label,value"
+						style="width:100%" layou="grid">
+						<h:outputText value="Conselho" />
+						<h:outputText value="#{docRegisto.mensagem.conselho }"
+							style="display:block" />
+
+						<h:outputText value="Mensagem" />
+						<h:outputText value="#{docRegisto.mensagem.mensagem }"
+							style="display:block" />
+
+						<h:outputText value="SMS" />
+						<h:outputText value="#{docRegisto.sms.SMS}" style="display:block" />
+
+					</p:panelGrid>
+				</p:rowExpansion>
+
+			</p:dataTable>
+
+			<p:confirmDialog header="Exclusão do Registo"
+				message="Tem certeza que deseja excluir o Registo?"
+				widgetVar="ExclusaoRegisto" id="confirmacaoExclusaoDialog"
+				closeOnEscape="true">
+				<p:button value="Não"
+					onclick="PF('ExclusaoRegisto').hide(); return false" />
+
+				<p:commandButton value="Sim"
+					oncomplete="PF('ExclusaoRegisto').hide()"
+					action="#{pesquidaGestaoDeArquivoBean.excluir}" process="@this"
+					update=":frm:registosTable" />
+
+			</p:confirmDialog>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

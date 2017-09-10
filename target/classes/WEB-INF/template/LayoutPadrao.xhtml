@@ -9,10 +9,11 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title><ui:insert name="titulo">Sistema de Gestão de Messagens</ui:insert></title>
 	<h:outputStylesheet library="css" name="sistema.css" />
+	<h:outputScript library="js" name="jquery.maskMoney.min.js" />
 </h:head>
 <h:body>
 
-	<p:ajaxStatus styleClass="ajax-status">
+	<p:ajaxStatus styleClass="ajax-status" oncomplete="configurarMoeda()">
 		<f:facet name="start">
 			<p:graphicImage library="images" name="carregando.gif" />
 
@@ -35,10 +36,10 @@
 		<span
 			style="float: left; height: 30px; line-height: 30px; margin-right: 60px">
 			Ola usuário </span>
-		<h:form style=" display:inline-block">
+		<h:form style=" display:inline-block"  enctype="multipart/form-data">
 			<p:menubar styleClass="menu-sistema ">
 				<p:submenu label="Cadastro" >
-				<p:menuitem value="Cadastro de Informação" outcome="/CadastroBoletim/Cadastro"/>
+				<p:menuitem value="Cadastro de Informação" outcome="/boletim/Cadastro"/>
 					
 				</p:submenu>
 				<p:submenu label="Relatórios">
@@ -60,6 +61,22 @@
 	<p:separator style="margin-top: 20px" />
 
 	<footer>    BASE DE DADOS KOHIWA © 2017 <a href="http://www.mozsoft.co.mz">   Concebido por MozSoft, Lda </a></footer>
+	<script>
+		function configurarMoeda() {
+			$(".moeda").maskMoney({
+				decimal : ",",
+				thousands : ".",
+				allowZero : true
+			});
+		}
+
+		$(document).ready(function() {
+			configurarMoeda();
+		});
+	</script>
+
+
+	
 </h:body>
 
 

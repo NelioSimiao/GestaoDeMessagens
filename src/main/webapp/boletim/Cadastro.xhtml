@@ -3,10 +3,16 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
 
 	<ui:define name="titulo">novo registo</ui:define>
 	<ui:define name="corpo">
+		<f:metadata>
+			<f:viewParam name="dummy" />
+			<o:viewParam name="docRegisto"
+				value="#{gestaoDeArquivoBean.docRegisto}" />
+			<f:event listener="#{gestaoDeArquivoBean.init}" type="preRenderView" />
+		</f:metadata>
 		<h:form id="frm" enctype="multipart/form-data">
 			<h1>Novo Registo</h1>
 			<p:messages autoUpdate="true" />
@@ -14,7 +20,13 @@
 			<p:toolbar style="margin-top:10px">
 				<p:toolbarGroup>
 					<p:commandButton value="Salvar" id="botaoSalvar"
+
 						action="#{gestaoDeArquivoBean.salvar }" update="@form" />
+				</p:toolbarGroup>
+
+				<p:toolbarGroup align="right">
+					<p:button value="Pesquisa do Registo"
+						outcome="/boletim/PesquisaCadastro" />
 				</p:toolbarGroup>
 
 			</p:toolbar>
@@ -27,27 +39,34 @@
 
 						<p:outputLabel value="Data de difusão da messagem"
 							for="dataDefusao" />
-						<p:calendar id="dataDefusao" value="#{gestaoDeArquivoBean.docRegisto.mensagem.dataDifusaoMensagem }" >
+						<p:calendar id="dataDefusao"
+							value="#{gestaoDeArquivoBean.docRegisto.mensagem.dataDifusaoMensagem }">
 							<f:convertDateTime pattern="dd/MM/yyyy" />
 						</p:calendar>
 
-						<p:outputLabel value="Preço " for="preco" />
-						<p:inputText id="preco" size="60" value="#{gestaoDeArquivoBean.docRegisto.mensagem.precoSMS}"/>
+						<p:outputLabel value="Preço Mensagem" for="precoMensagem" />
+						<p:inputText id="precoMensagem"
+							value="#{gestaoDeArquivoBean.docRegisto.mensagem.precoMensagem}"
+							styleClass="moeda">
+							<f:convertNumber pattern="#,##0.00" />
+							
+						</p:inputText>
 
 						<p:outputLabel value="Conselho " for="conselho" />
 						<h:panelGroup layout="block" style="padding-right: 10px"
 							id="conselho">
-							<p:inputTextarea rows="5" style="width:100%" value="#{gestaoDeArquivoBean.docRegisto.mensagem.conselho}"  />
+							<p:inputTextarea rows="5" style="width:100%"
+								value="#{gestaoDeArquivoBean.docRegisto.mensagem.conselho}" />
 						</h:panelGroup>
 
 						<p:outputLabel value="Mensagem " for="mensagem" />
 						<h:panelGroup layout="block" style="padding-right: 10px"
 							id="mensagem">
-							<p:inputTextarea rows="5" style="width:100%" value="#{gestaoDeArquivoBean.docRegisto.mensagem.mensagem }" />
+							<p:inputTextarea rows="5" style="width:100%"
+								value="#{gestaoDeArquivoBean.docRegisto.mensagem.mensagem }" />
 						</h:panelGroup>
 					</p:panelGrid>
 				</p:tab>
-
 
 				<p:tab title="Cadastro de SMS">
 
@@ -55,20 +74,26 @@
 						style="margin-top:10px;width:100%" columnClasses="rotulo,canpo">
 
 						<p:outputLabel value="Data de difusão da SMS" for="dataDefusaosms" />
-						<p:calendar id="dataDefusaosms"  value="#{gestaoDeArquivoBean.docRegisto.sms.dataDifusaoSMS}" />
+						<p:calendar id="dataDefusaosms"
+							value="#{gestaoDeArquivoBean.docRegisto.sms.dataDifusaoSMS}" />
 
 						<p:outputLabel value="Distrito " for="distrito" />
-						<p:inputText id="distrito" size="60" value="#{gestaoDeArquivoBean.docRegisto.sms.distrito}"/>
-
+						<p:inputText id="distrito" size="60"
+							value="#{gestaoDeArquivoBean.docRegisto.sms.distrito}" />
+						<p:outputLabel value="Preço SMS " for="preco" />
+						<p:inputText id="preco" size="60"
+							value="#{gestaoDeArquivoBean.docRegisto.sms.precoSMS}"
+							styleClass="moeda">
+							<f:convertNumber maxFractionDigits="2" minFractionDigits="2" />
+						</p:inputText>
 						<p:outputLabel value="SMS" />
 
 						<h:panelGroup layout="block" style="padding-right: 10px">
-							<p:inputTextarea rows="5" style="width:100%"  value="#{gestaoDeArquivoBean.docRegisto.sms.SMS}"/>
+							<p:inputTextarea rows="5" style="width:100%"
+								value="#{gestaoDeArquivoBean.docRegisto.sms.SMS}" />
 						</h:panelGroup>
 
-
 					</p:panelGrid>
-
 
 				</p:tab>
 				<p:tab title="Guardar Boletim">
@@ -76,21 +101,17 @@
 						style="margin-top:10px;width:100%" columnClasses="rotulo,canpo">
 
 						<p:outputLabel value="Data" for="data" />
-						<p:calendar id="data" />
+						<p:calendar id="data">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</p:calendar>
 
 						<p:outputLabel value="Radio" for="radio" />
 						<p:inputText id="radio" />
 
 
 						<p:outputLabel value="Anexar o documento " />
-						<p:fileUpload mode="simple" skinSimple="true" mltiple="false" />
-
-
-
-
-
-
-
+						<p:fileUpload value="#{gestaoDeArquivoBean.file}" mode="advanced"
+							fileUploadListener="#{gestaoDeArquivoBean.upload}" sizeLimit="1024" />
 					</p:panelGrid>
 				</p:tab>
 			</p:tabView>

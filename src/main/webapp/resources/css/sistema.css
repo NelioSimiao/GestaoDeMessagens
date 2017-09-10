@@ -36,3 +36,18 @@ header > div {
     background: url(#{resource['images:seta-para-baixo.png']}) no-repeat;
 }
 /* Menu sistema fim */
+
+.label {
+	width: 100px;
+}
+
+.value {
+	width: 100%;
+}
+
+
+
+.linha{width: 30px;}
+.linha2 {
+	width: 70px;
+}

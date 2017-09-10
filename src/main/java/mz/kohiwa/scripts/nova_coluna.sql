@@ -1,0 +1,1 @@
+alter table doc_registo add documento longblob;

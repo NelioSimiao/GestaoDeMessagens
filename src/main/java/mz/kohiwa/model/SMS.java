@@ -9,12 +9,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.validator.constraints.NotBlank;
+import org.apache.commons.lang3.StringUtils;
+import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
 @Table(name = "sms")
@@ -47,18 +50,24 @@ public class SMS implements Serializable {
 	public void setDataDifusaoSMS(Date dataDifusaoSMS) {
 		this.dataDifusaoSMS = dataDifusaoSMS;
 	}
-
-	@NotBlank
+	@Lob
+	@NotEmpty
 	@Column(name = "sms", nullable = false)
 	public String getSMS() {
 		return SMS;
+	}
+	
+	@Transient
+	public String getSmsresumido(){
+		return SMS==null?"": StringUtils.left(SMS, 50)+".....";
 	}
 
 	public void setSMS(String sMS) {
 		SMS = sMS;
 	}
-	@NotBlank
-	@Column(name = "distrito", nullable = false)
+
+	@NotEmpty
+	@Column(name = "distrito",nullable=false)
 	public String getDistrito() {
 		return distrito;
 	}
@@ -66,8 +75,9 @@ public class SMS implements Serializable {
 	public void setDistrito(String distrito) {
 		this.distrito = distrito;
 	}
-	@NotBlank
-	@Column(name = "preco_sms", nullable = false)
+
+	@NotNull
+	@Column(name = "preco_sms",nullable=false)
 	public BigDecimal getPrecoSMS() {
 		return precoSMS;
 	}
